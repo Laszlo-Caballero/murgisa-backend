@@ -5,7 +5,7 @@ export class Cliente {
   @PrimaryGeneratedColumn()
   idCliente: number;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column()
   nombre: string;
 
   @Column({ type: 'char', length: 8 })
@@ -14,9 +14,12 @@ export class Cliente {
   @Column()
   correo: string;
 
-  @Column({ type: 'char', length: 9 })
+  @Column({ type: 'varchar', length: 50 })
   telefono: string;
 
   @Column()
   direccion: string;
+
+  @Column()
+  fechaNacimiento: Date;
 }
