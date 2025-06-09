@@ -8,6 +8,7 @@ import { ServicioModule } from './servicio/servicio.module';
 import { VentaModule } from './venta/venta.module';
 import { PersonalModule } from './personal/personal.module';
 import { ProfesionModule } from './profesion/profesion.module';
+import { DepartamentoModule } from './departamento/departamento.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { ProfesionModule } from './profesion/profesion.module';
     VentaModule,
     PersonalModule,
     ProfesionModule,
+    DepartamentoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
