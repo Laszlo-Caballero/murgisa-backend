@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Ciudad } from './ciudades.entity';
 
 @Entity()
 export class Cliente {
@@ -22,4 +23,10 @@ export class Cliente {
 
   @Column()
   fechaNacimiento: Date;
+
+  @Column({ default: true })
+  estado: boolean;
+
+  @ManyToOne(() => Ciudad, (ciudad) => ciudad.clientes)
+  ciudad: Ciudad;
 }
