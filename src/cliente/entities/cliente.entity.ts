@@ -17,7 +17,7 @@ export class Cliente {
 
   @Column({ type: 'varchar', length: 50 })
   telefono: string;
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, default: '' })
   razonSocial: string;
 
   @Column()
