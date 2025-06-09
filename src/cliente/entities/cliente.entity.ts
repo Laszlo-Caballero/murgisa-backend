@@ -17,6 +17,8 @@ export class Cliente {
 
   @Column({ type: 'varchar', length: 50 })
   telefono: string;
+  @Column({ type: 'varchar', length: 100 })
+  razonSocial: string;
 
   @Column()
   direccion: string;

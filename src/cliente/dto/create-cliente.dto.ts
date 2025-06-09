@@ -33,6 +33,9 @@ export class CreateClienteDto {
   @IsString()
   @IsNotEmpty()
   fechaNacimiento: string;
+  @IsString()
+  @IsNotEmpty()
+  razonSocial: string;
 
   @IsNumber()
   @IsNotEmpty()
