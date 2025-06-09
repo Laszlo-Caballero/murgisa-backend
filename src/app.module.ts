@@ -11,6 +11,7 @@ import { ProfesionModule } from './profesion/profesion.module';
 import { DepartamentoModule } from './departamento/departamento.module';
 import { CargoModule } from './cargo/cargo.module';
 
+
 @Module({
   imports: [
     ClienteModule,
