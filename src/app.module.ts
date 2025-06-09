@@ -9,6 +9,7 @@ import { VentaModule } from './venta/venta.module';
 import { PersonalModule } from './personal/personal.module';
 import { ProfesionModule } from './profesion/profesion.module';
 import { DepartamentoModule } from './departamento/departamento.module';
+import { CargoModule } from './cargo/cargo.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { DepartamentoModule } from './departamento/departamento.module';
     PersonalModule,
     ProfesionModule,
     DepartamentoModule,
+    CargoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
