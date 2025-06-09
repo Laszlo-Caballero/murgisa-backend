@@ -9,6 +9,7 @@ import { VentaModule } from './venta/venta.module';
 import { PersonalModule } from './personal/personal.module';
 import { ProfesionModule } from './profesion/profesion.module';
 
+
 @Module({
   imports: [
     ClienteModule,
