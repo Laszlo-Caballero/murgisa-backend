@@ -41,7 +41,6 @@ export class PersonalService {
 
     const newPersonal = this.personalRepository.create({
       ...personalData,
-
       cargo,
       profesion,
     });

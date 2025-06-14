@@ -20,12 +20,19 @@ export class AuthService {
 
   async create(createAuthDto: CreateAuthDto) {
     const { personalId } = createAuthDto;
-    const personal = await this.personalRepository.findOneBy({
-      idPersonal: personalId,
+    const personal = await this.personalRepository.findOne({
+      where: {
+        idPersonal: personalId,
+      },
+      relations: ['usuario'],
     });
 
     if (!personal) {
       return new HttpException('No se encontró el personal', 404);
+    }
+
+    if (personal.usuario) {
+      return new HttpException('El personal ya tiene un usuario asociado', 400);
     }
 
     const contraseñaEncriptada = await hash(createAuthDto.contrasena, 10);
@@ -33,10 +40,16 @@ export class AuthService {
     const usuario = this.authRepository.create({
       usuario: createAuthDto.usuario,
       contrasena: contraseñaEncriptada,
+      correo: createAuthDto.correo,
       personal,
     });
 
     const saveUser = await this.authRepository.save(usuario);
+
+    await this.personalRepository.update(
+      { idPersonal: personal.idPersonal },
+      { estado: true, usuario: saveUser },
+    );
 
     const payload = {
       idUsuario: saveUser.idUsuario,
