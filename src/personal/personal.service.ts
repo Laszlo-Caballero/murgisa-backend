@@ -6,6 +6,7 @@ import { Personal } from './entities/personal.entity';
 import { Repository } from 'typeorm';
 import { Cargo } from 'src/cargo/entities/cargo.entity';
 import { Profesion } from 'src/profesion/entities/profesion.entity';
+import { Departamento } from 'src/departamento/entities/departamento.entity';
 
 @Injectable()
 export class PersonalService {
@@ -16,10 +17,24 @@ export class PersonalService {
     private readonly cargoRepository: Repository<Cargo>,
     @InjectRepository(Profesion)
     private readonly profesionRepository: Repository<Profesion>,
+    @InjectRepository(Departamento)
+    private readonly departamentoRepository: Repository<Departamento>,
   ) {}
 
   async create(createPersonalDto: CreatePersonalDto) {
-    const { cargoId, profesionId, ...personalData } = createPersonalDto;
+    const { cargoId, profesionId, departamentoId, ...personalData } =
+      createPersonalDto;
+
+    const departamento = await this.departamentoRepository.findOneBy({
+      idDepartamento: departamentoId,
+    });
+    if (!departamento) {
+      throw new HttpException(
+        'No se encontró el departamento con el ID proporcionado',
+        404,
+      );
+    }
+
     const cargo = await this.cargoRepository.findOneBy({ idCargo: cargoId });
 
     if (!cargo) {
@@ -43,20 +58,21 @@ export class PersonalService {
       ...personalData,
       cargo,
       profesion,
+      departamento,
     });
     return this.personalRepository.save(newPersonal);
   }
 
   findAll() {
     return this.personalRepository.find({
-      relations: ['cargo', 'profesion', 'usuario'],
+      relations: ['cargo', 'profesion', 'usuario', 'departamento'],
     });
   }
 
   findOne(id: number) {
     const personal = this.personalRepository.findOne({
       where: { idPersonal: id },
-      relations: ['cargo', 'profesion', 'usuario'],
+      relations: ['cargo', 'profesion', 'usuario', 'departamento'],
     });
 
     if (!personal) {
@@ -67,13 +83,22 @@ export class PersonalService {
   }
 
   async update(id: number, updatePersonalDto: UpdatePersonalDto) {
-    const { cargoId, profesionId, ...personalData } = updatePersonalDto;
+    const { cargoId, profesionId, departamentoId, ...personalData } =
+      updatePersonalDto;
     const personal = await this.personalRepository.findOneBy({
       idPersonal: id,
     });
     if (!personal) {
       throw new HttpException('Personal not found', 404);
     }
+
+    const departamento = await this.departamentoRepository.findOneBy({
+      idDepartamento: departamentoId,
+    });
+    if (!departamento) {
+      throw new HttpException('Departamento not found', 404);
+    }
+
     const cargo = await this.cargoRepository.findOneBy({ idCargo: cargoId });
     if (!cargo) {
       throw new HttpException('Cargo not found', 404);
@@ -89,6 +114,7 @@ export class PersonalService {
       ...personalData,
       cargo,
       profesion,
+      departamento,
     });
 
     return {

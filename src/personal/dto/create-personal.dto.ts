@@ -46,4 +46,7 @@ export class CreatePersonalDto {
   @IsNumber()
   @Min(0)
   profesionId: number;
+  @IsNumber()
+  @Min(0)
+  departamentoId: number;
 }

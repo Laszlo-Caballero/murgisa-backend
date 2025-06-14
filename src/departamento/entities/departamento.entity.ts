@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Personal } from '../../personal/entities/personal.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Departamento {
@@ -12,4 +13,7 @@ export class Departamento {
   estado: boolean;
   @Column({ type: 'float', default: 0 })
   presupuesto: number;
+
+  @OneToMany(() => Personal, (personal) => personal.departamento)
+  personal: Personal[];
 }

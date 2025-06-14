@@ -11,6 +11,7 @@ import { AsignacionPersonal } from './asignacionPersonal.entity';
 import { Cargo } from '../../cargo/entities/cargo.entity';
 import { Auth } from '../../auth/entities/auth.entity';
 import { Profesion } from '../../profesion/entities/profesion.entity';
+import { Departamento } from '../../departamento/entities/departamento.entity';
 
 @Entity()
 export class Personal {
@@ -49,4 +50,7 @@ export class Personal {
 
   @ManyToOne(() => Profesion, (profesion) => profesion.personal)
   profesion: Profesion;
+
+  @ManyToOne(() => Departamento, (departamento) => departamento.personal)
+  departamento: Departamento;
 }

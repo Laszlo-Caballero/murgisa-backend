@@ -5,9 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Personal } from './entities/personal.entity';
 import { Profesion } from 'src/profesion/entities/profesion.entity';
 import { Cargo } from 'src/cargo/entities/cargo.entity';
+import { Departamento } from 'src/departamento/entities/departamento.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Personal, Cargo, Profesion])],
+  imports: [
+    TypeOrmModule.forFeature([Personal, Cargo, Profesion, Departamento]),
+  ],
   controllers: [PersonalController],
   providers: [PersonalService],
 })
