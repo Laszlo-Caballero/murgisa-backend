@@ -10,7 +10,7 @@ import { PersonalModule } from './personal/personal.module';
 import { ProfesionModule } from './profesion/profesion.module';
 import { DepartamentoModule } from './departamento/departamento.module';
 import { CargoModule } from './cargo/cargo.module';
-
+import { FormaPagoModule } from './forma-pago/forma-pago.module';
 
 @Module({
   imports: [
@@ -35,6 +35,7 @@ import { CargoModule } from './cargo/cargo.module';
     ProfesionModule,
     DepartamentoModule,
     CargoModule,
+    FormaPagoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
