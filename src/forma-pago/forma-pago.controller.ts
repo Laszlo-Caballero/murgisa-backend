@@ -17,13 +17,11 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 export class FormaPagoController {
   constructor(private readonly formaPagoService: FormaPagoService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createFormaPagoDto: CreateFormaPagoDto) {
     return this.formaPagoService.create(createFormaPagoDto);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.formaPagoService.findAll();
