@@ -1,26 +1,116 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreatePersonalDto } from './dto/create-personal.dto';
 import { UpdatePersonalDto } from './dto/update-personal.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Personal } from './entities/personal.entity';
+import { Repository } from 'typeorm';
+import { Cargo } from 'src/cargo/entities/cargo.entity';
+import { Profesion } from 'src/profesion/entities/profesion.entity';
 
 @Injectable()
 export class PersonalService {
-  create(createPersonalDto: CreatePersonalDto) {
-    return 'This action adds a new personal';
+  constructor(
+    @InjectRepository(Personal)
+    private readonly personalRepository: Repository<Personal>,
+    @InjectRepository(Cargo)
+    private readonly cargoRepository: Repository<Cargo>,
+    @InjectRepository(Profesion)
+    private readonly profesionRepository: Repository<Profesion>,
+  ) {}
+
+  async create(createPersonalDto: CreatePersonalDto) {
+    const { cargoId, profesionId, ...personalData } = createPersonalDto;
+    const cargo = await this.cargoRepository.findOneBy({ idCargo: cargoId });
+
+    if (!cargo) {
+      throw new HttpException(
+        'No se encontró el cargo con el ID proporcionado',
+        404,
+      );
+    }
+
+    const profesion = await this.profesionRepository.findOneBy({
+      idProfesion: profesionId,
+    });
+    if (!profesion) {
+      throw new HttpException(
+        'No se encontró la profesión con el ID proporcionado',
+        404,
+      );
+    }
+
+    const newPersonal = this.personalRepository.create({
+      ...personalData,
+
+      cargo,
+      profesion,
+    });
+    return this.personalRepository.save(newPersonal);
   }
 
   findAll() {
-    return `This action returns all personal`;
+    return this.personalRepository.find({
+      relations: ['cargo', 'profesion', 'usuario'],
+    });
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} personal`;
+    const personal = this.personalRepository.findOne({
+      where: { idPersonal: id },
+      relations: ['cargo', 'profesion', 'usuario'],
+    });
+
+    if (!personal) {
+      throw new HttpException('Personal not found', 404);
+    }
+
+    return personal;
   }
 
-  update(id: number, updatePersonalDto: UpdatePersonalDto) {
-    return `This action updates a #${id} personal`;
+  async update(id: number, updatePersonalDto: UpdatePersonalDto) {
+    const { cargoId, profesionId, ...personalData } = updatePersonalDto;
+    const personal = await this.personalRepository.findOneBy({
+      idPersonal: id,
+    });
+    if (!personal) {
+      throw new HttpException('Personal not found', 404);
+    }
+    const cargo = await this.cargoRepository.findOneBy({ idCargo: cargoId });
+    if (!cargo) {
+      throw new HttpException('Cargo not found', 404);
+    }
+    const profesion = await this.profesionRepository.findOneBy({
+      idProfesion: profesionId,
+    });
+    if (!profesion) {
+      throw new HttpException('Profesion not found', 404);
+    }
+
+    await this.personalRepository.update(id, {
+      ...personalData,
+      cargo,
+      profesion,
+    });
+
+    return {
+      message: 'Personal updated successfully',
+      status: true,
+    };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} personal`;
+  async remove(id: number) {
+    const personal = await this.personalRepository.findOneBy({
+      idPersonal: id,
+    });
+    if (!personal) {
+      throw new HttpException('Personal not found', 404);
+    }
+
+    await this.personalRepository.update(id, { estado: false });
+
+    return {
+      message: 'Personal removed successfully',
+      status: true,
+    };
   }
 }

@@ -19,7 +19,7 @@ export class Personal {
   @Column({ length: 100 })
   nombre: string;
   @Column({ length: 100 })
-  apellido_parterno: string;
+  apellido_paterno: string;
   @Column({ length: 100 })
   apellido_materno: string;
   @Column({ type: 'float' })
