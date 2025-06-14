@@ -1,5 +1,11 @@
-import { Cargo } from '../../cargo/entities/cargo.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Personal } from '../../personal/entities/personal.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('Usuario')
 export class Auth {
@@ -11,7 +17,7 @@ export class Auth {
   contrasena: string;
   @Column({ default: '' })
   correo: string;
-
-  @ManyToOne(() => Cargo, (cargo) => cargo.usuario)
-  cargo: Cargo;
+  @OneToOne(() => Personal, (personal) => personal.usuario)
+  @JoinColumn()
+  personal: Personal;
 }

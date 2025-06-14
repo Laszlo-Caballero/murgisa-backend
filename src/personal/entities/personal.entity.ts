@@ -1,5 +1,15 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { AsignacionPersonal } from './asignacionPersonal.entity';
+import { Cargo } from '../../cargo/entities/cargo.entity';
+import { Auth } from '../../auth/entities/auth.entity';
 
 @Entity()
 export class Personal {
@@ -20,4 +30,11 @@ export class Personal {
     (asignacionPersonal) => asignacionPersonal.personal,
   )
   asignacionPersonal: AsignacionPersonal[];
+
+  @ManyToOne(() => Cargo, (cargo) => cargo.usuario)
+  cargo: Cargo;
+
+  @OneToOne(() => Auth, (auth) => auth.personal)
+  @JoinColumn()
+  usuario: Auth;
 }

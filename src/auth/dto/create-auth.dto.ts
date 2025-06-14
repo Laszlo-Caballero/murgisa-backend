@@ -15,5 +15,5 @@ export class CreateAuthDto {
 
   @IsNumber()
   @Min(0)
-  cargoId: number;
+  personalId: number;
 }

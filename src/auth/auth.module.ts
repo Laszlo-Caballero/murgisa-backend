@@ -5,13 +5,13 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Auth } from './entities/auth.entity';
 import { JwtModule } from '@nestjs/jwt';
-import { Cargo } from 'src/cargo/entities/cargo.entity';
 import { JwtStrategy } from './jwt.strategy';
+import { Personal } from 'src/personal/entities/personal.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forFeature([Auth, Cargo]),
+    TypeOrmModule.forFeature([Auth, Personal]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
     }),

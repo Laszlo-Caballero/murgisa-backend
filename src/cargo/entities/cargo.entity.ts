@@ -1,4 +1,4 @@
-import { Auth } from '../../auth/entities/auth.entity';
+import { Personal } from '../../personal/entities/personal.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -12,6 +12,6 @@ export class Cargo {
   @Column({ default: true })
   estado: boolean;
 
-  @OneToMany(() => Auth, (auth) => auth.cargo)
-  usuario: Auth[];
+  @OneToMany(() => Personal, (personal) => personal.cargo)
+  usuario: Personal[];
 }

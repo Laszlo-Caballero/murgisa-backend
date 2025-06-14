@@ -4,26 +4,28 @@ import { LoginDto } from './dto/login.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Auth } from './entities/auth.entity';
 import { Repository } from 'typeorm';
-import { Cargo } from 'src/cargo/entities/cargo.entity';
 import { hash, compare } from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
+import { Personal } from 'src/personal/entities/personal.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(Auth)
     private authRepository: Repository<Auth>,
-    @InjectRepository(Cargo)
-    private cargoRepository: Repository<Cargo>,
     private jwtService: JwtService,
+    @InjectRepository(Personal)
+    private personalRepository: Repository<Personal>,
   ) {}
 
   async create(createAuthDto: CreateAuthDto) {
-    const { cargoId } = createAuthDto;
-    const cargo = await this.cargoRepository.findOneBy({ idCargo: cargoId });
+    const { personalId } = createAuthDto;
+    const personal = await this.personalRepository.findOneBy({
+      idPersonal: personalId,
+    });
 
-    if (!cargo) {
-      return new HttpException('No se encontró el cargo', 404);
+    if (!personal) {
+      return new HttpException('No se encontró el personal', 404);
     }
 
     const contraseñaEncriptada = await hash(createAuthDto.contrasena, 10);
@@ -31,7 +33,7 @@ export class AuthService {
     const usuario = this.authRepository.create({
       usuario: createAuthDto.usuario,
       contrasena: contraseñaEncriptada,
-      cargo,
+      personal,
     });
 
     const saveUser = await this.authRepository.save(usuario);
@@ -39,7 +41,7 @@ export class AuthService {
     const payload = {
       idUsuario: saveUser.idUsuario,
       usuario: saveUser.usuario,
-      cargo: saveUser.cargo.idCargo,
+      personalId: personal.idPersonal,
     };
 
     const token = this.jwtService.sign(payload);
@@ -56,7 +58,7 @@ export class AuthService {
 
     const user = await this.authRepository.findOne({
       where: { usuario: usuario },
-      relations: ['cargo'],
+      relations: ['personal'],
     });
 
     if (!user) {
@@ -71,7 +73,7 @@ export class AuthService {
     const payload = {
       idUsuario: user.idUsuario,
       usuario: user.usuario,
-      cargo: user.cargo.idCargo,
+      personalId: user.personal.idPersonal,
     };
 
     const token = this.jwtService.sign(payload);
