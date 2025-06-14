@@ -13,6 +13,10 @@ export class CreateFormaPagoDto {
   @IsNotEmpty()
   tipo: string;
 
+  @IsString()
+  @IsNotEmpty()
+  descripcion: string;
+
   @IsNumber()
   @IsNotEmpty()
   @Min(0)
