@@ -9,6 +9,8 @@ export class Auth {
   usuario: string;
   @Column()
   contrasena: string;
+  @Column({ default: '' })
+  correo: string;
 
   @ManyToOne(() => Cargo, (cargo) => cargo.usuario)
   cargo: Cargo;
