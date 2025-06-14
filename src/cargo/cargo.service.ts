@@ -4,13 +4,15 @@ import { UpdateCargoDto } from './dto/update-cargo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cargo } from './entities/cargo.entity';
 import { Repository } from 'typeorm';
+import { Auth } from 'src/auth/entities/auth.entity';
 
 @Injectable()
 export class CargoService {
-
   constructor(
     @InjectRepository(Cargo)
     private cargoRespository: Repository<Cargo>,
+    @InjectRepository(Auth)
+    private authRepository: Repository<Auth>,
   ) {}
 
   create(createCargoDto: CreateCargoDto) {
@@ -20,8 +22,23 @@ export class CargoService {
   }
 
   async findAll() {
-    const cargos = await this.cargoRespository.find();
-    return cargos;
+    // esto se cambiara
+    const cargos = await this.cargoRespository
+      .createQueryBuilder('cargo')
+      .loadRelationCountAndMap('cargo.totalUsuario', 'cargo.usuario')
+      .getMany();
+    const countCargos = await this.cargoRespository.count();
+    const countCargosActivos = await this.cargoRespository.countBy({
+      estado: true,
+    });
+    const usuarios = await this.authRepository.count();
+
+    return {
+      cargos,
+      total: countCargos,
+      activos: countCargosActivos,
+      usuarios,
+    };
   }
 
   async findOne(id: number) {
