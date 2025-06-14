@@ -1,17 +1,29 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { FormaPagoService } from './forma-pago.service';
 import { CreateFormaPagoDto } from './dto/create-forma-pago.dto';
 import { UpdateFormaPagoDto } from './dto/update-forma-pago.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('forma-pago')
 export class FormaPagoController {
   constructor(private readonly formaPagoService: FormaPagoService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createFormaPagoDto: CreateFormaPagoDto) {
     return this.formaPagoService.create(createFormaPagoDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.formaPagoService.findAll();
@@ -23,7 +35,10 @@ export class FormaPagoController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFormaPagoDto: UpdateFormaPagoDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateFormaPagoDto: UpdateFormaPagoDto,
+  ) {
     return this.formaPagoService.update(+id, updateFormaPagoDto);
   }
 

@@ -1,0 +1,15 @@
+import { IsNotEmpty, IsNumber, IsString, Min } from 'class-validator';
+
+export class CreateAuthDto {
+  @IsString()
+  @IsNotEmpty()
+  usuario: string;
+
+  @IsString()
+  @IsNotEmpty()
+  contrasena: string;
+
+  @IsNumber()
+  @Min(0)
+  cargoId: number;
+}

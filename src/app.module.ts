@@ -11,6 +11,7 @@ import { ProfesionModule } from './profesion/profesion.module';
 import { DepartamentoModule } from './departamento/departamento.module';
 import { CargoModule } from './cargo/cargo.module';
 import { FormaPagoModule } from './forma-pago/forma-pago.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { FormaPagoModule } from './forma-pago/forma-pago.module';
     DepartamentoModule,
     CargoModule,
     FormaPagoModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
