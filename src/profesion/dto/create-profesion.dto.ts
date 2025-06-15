@@ -4,4 +4,8 @@ export class CreateProfesionDto {
   @IsString()
   @IsNotEmpty()
   titulo: string;
+
+  @IsString()
+  @IsNotEmpty()
+  descripcion: string;
 }

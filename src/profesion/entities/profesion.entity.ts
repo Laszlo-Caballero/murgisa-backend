@@ -9,6 +9,8 @@ export class Profesion {
   titulo: string;
   @Column({ default: true })
   estado: boolean;
+  @Column({ default: '' })
+  descripcion: string;
 
   @OneToMany(() => Personal, (personal) => personal.profesion)
   personal: Personal[];
