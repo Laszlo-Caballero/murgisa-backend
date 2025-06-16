@@ -4,16 +4,23 @@ import { UpdateFormaPagoDto } from './dto/update-forma-pago.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FormaPago } from './entities/forma-pago.entity';
 import { Repository } from 'typeorm';
+import { Log } from 'src/home/entities/log.entity';
 
 @Injectable()
 export class FormaPagoService {
   constructor(
     @InjectRepository(FormaPago)
     private formaPagoRepository: Repository<FormaPago>,
+    @InjectRepository(Log)
+    private logRepository: Repository<Log>,
   ) {}
 
   create(createFormaPagoDto: CreateFormaPagoDto) {
     const newFormaPago = this.formaPagoRepository.create(createFormaPagoDto);
+    this.logRepository.save({
+      tipo: 'Forma de Pago',
+      mensaje: `Se ha creado la forma de pago ${newFormaPago.tipo}`,
+    });
     return this.formaPagoRepository.save(newFormaPago);
   }
 

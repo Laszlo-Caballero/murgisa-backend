@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Cargo } from './entities/cargo.entity';
 import { Repository } from 'typeorm';
 import { Auth } from 'src/auth/entities/auth.entity';
+import { Log } from 'src/home/entities/log.entity';
 
 @Injectable()
 export class CargoService {
@@ -13,10 +14,17 @@ export class CargoService {
     private cargoRespository: Repository<Cargo>,
     @InjectRepository(Auth)
     private authRepository: Repository<Auth>,
+    @InjectRepository(Log)
+    private logRepository: Repository<Log>,
   ) {}
 
-  create(createCargoDto: CreateCargoDto) {
+  async create(createCargoDto: CreateCargoDto) {
     const newCargo = this.cargoRespository.create(createCargoDto);
+
+    await this.logRepository.save({
+      tipo: 'Cargo',
+      mensaje: `Se ha creado el cargo ${newCargo.cargo}`,
+    });
 
     return this.cargoRespository.save(newCargo);
   }

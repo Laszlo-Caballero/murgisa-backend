@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { hash, compare } from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { Personal } from 'src/personal/entities/personal.entity';
+import { Log } from 'src/home/entities/log.entity';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +17,8 @@ export class AuthService {
     private jwtService: JwtService,
     @InjectRepository(Personal)
     private personalRepository: Repository<Personal>,
+    @InjectRepository(Log)
+    private logRepository: Repository<Log>,
   ) {}
 
   async create(createAuthDto: CreateAuthDto) {
@@ -58,6 +61,11 @@ export class AuthService {
     };
 
     const token = this.jwtService.sign(payload);
+
+    await this.logRepository.save({
+      tipo: 'Usuario',
+      mensaje: `Se ha creado un Usuario ${saveUser.usuario}`,
+    });
 
     return {
       message: 'Usuario creado con éxito',

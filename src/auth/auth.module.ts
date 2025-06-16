@@ -7,11 +7,12 @@ import { Auth } from './entities/auth.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
 import { Personal } from 'src/personal/entities/personal.entity';
+import { Log } from 'src/home/entities/log.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forFeature([Auth, Personal]),
+    TypeOrmModule.forFeature([Auth, Personal, Log]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
     }),
