@@ -1,5 +1,12 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Ciudad } from './ciudades.entity';
+import { Venta } from '../../venta/entities/venta.entity';
 
 @Entity()
 export class Cliente {
@@ -31,4 +38,7 @@ export class Cliente {
 
   @ManyToOne(() => Ciudad, (ciudad) => ciudad.clientes)
   ciudad: Ciudad;
+
+  @OneToMany(() => Venta, (venta) => venta.cliente)
+  ventas: Venta[];
 }

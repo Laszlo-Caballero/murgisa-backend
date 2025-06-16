@@ -1,11 +1,17 @@
+import { Servicio } from '../../servicio/entities/servicio.entity';
+import { Cliente } from '../../cliente/entities/cliente.entity';
 import { AsignacionPersonal } from '../../personal/entities/asignacionPersonal.entity';
 import {
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { PagoServicio } from './pagoServicio.entity';
+import { NotaSalida } from '../../nota-salida/entities/nota-salida.entity';
 
 @Entity()
 export class Venta {
@@ -28,4 +34,17 @@ export class Venta {
     (asignacionPersonal) => asignacionPersonal.venta,
   )
   asignacionPersonal: AsignacionPersonal[];
+
+  @ManyToOne(() => Cliente, (cliente) => cliente.ventas)
+  cliente: Cliente;
+
+  @ManyToMany(() => Servicio)
+  @JoinTable()
+  servicios: Servicio[];
+
+  @ManyToOne(() => PagoServicio, (pagoServicio) => pagoServicio.venta)
+  pagos: PagoServicio[];
+
+  @OneToMany(() => NotaSalida, (notaSalida) => notaSalida.venta)
+  notasSalida: NotaSalida[];
 }
