@@ -105,4 +105,8 @@ export class AuthService {
       token: token,
     };
   }
+
+  async validateUser() {
+    return { message: 'Usuario validado correctamente', status: true };
+  }
 }
