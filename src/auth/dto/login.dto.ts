@@ -1,9 +1,10 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class LoginDto {
   @IsString()
   @IsNotEmpty()
-  usuario: string;
+  @IsEmail()
+  correo: string;
   @IsString()
   @IsNotEmpty()
   contrasena: string;

@@ -75,10 +75,10 @@ export class AuthService {
   }
 
   async login(data: LoginDto) {
-    const { usuario, contrasena } = data;
+    const { correo, contrasena } = data;
 
     const user = await this.authRepository.findOne({
-      where: { usuario: usuario },
+      where: { correo: correo },
       relations: ['personal'],
     });
 
@@ -101,8 +101,10 @@ export class AuthService {
 
     return {
       message: 'Login exitoso',
-      usuario: user,
-      token: token,
+      usuario: {
+        ...user,
+        token,
+      },
     };
   }
 
