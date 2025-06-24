@@ -14,6 +14,9 @@ import { FormaPagoModule } from './forma-pago/forma-pago.module';
 import { AuthModule } from './auth/auth.module';
 import { HomeModule } from './home/home.module';
 import { NotaSalidaModule } from './nota-salida/nota-salida.module';
+import { RecursoModule } from './recurso/recurso.module';
+import { TipoRecursoModule } from './tipo-recurso/tipo-recurso.module';
+import { ProveedorModule } from './proveedor/proveedor.module';
 
 @Module({
   imports: [
@@ -42,6 +45,9 @@ import { NotaSalidaModule } from './nota-salida/nota-salida.module';
     AuthModule,
     HomeModule,
     NotaSalidaModule,
+    RecursoModule,
+    TipoRecursoModule,
+    ProveedorModule,
   ],
   controllers: [AppController],
   providers: [AppService],
