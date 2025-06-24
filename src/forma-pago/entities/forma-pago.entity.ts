@@ -1,5 +1,5 @@
 import { PagoServicio } from '../../venta/entities/pagoServicio.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class FormaPago {
@@ -21,6 +21,6 @@ export class FormaPago {
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   registeredAt: Date;
 
-  @ManyToOne(() => PagoServicio, (pagoServicio) => pagoServicio.formaPago)
+  @OneToMany(() => PagoServicio, (pagoServicio) => pagoServicio.formaPago)
   pagos: PagoServicio[];
 }
