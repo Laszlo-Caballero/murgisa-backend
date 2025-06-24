@@ -31,11 +31,11 @@ export class AuthService {
     });
 
     if (!personal) {
-      return new HttpException('No se encontró el personal', 404);
+      throw new HttpException('No se encontró el personal', 404);
     }
 
     if (personal.usuario) {
-      return new HttpException('El personal ya tiene un usuario asociado', 400);
+      throw new HttpException('El personal ya tiene un usuario asociado', 400);
     }
 
     const contraseñaEncriptada = await hash(createAuthDto.contrasena, 10);
@@ -83,13 +83,13 @@ export class AuthService {
     });
 
     if (!user) {
-      return new HttpException('Usuario no encontrado', 404);
+      throw new HttpException('Usuario no encontrado', 404);
     }
 
     const isPasswordValid = await compare(contrasena, user.contrasena);
 
     if (!isPasswordValid) {
-      return new HttpException('Contraseña incorrecta', 401);
+      throw new HttpException('Contraseña incorrecta', 401);
     }
     const payload = {
       idUsuario: user.idUsuario,
