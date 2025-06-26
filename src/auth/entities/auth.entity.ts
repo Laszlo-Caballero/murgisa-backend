@@ -5,6 +5,7 @@ import {
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
+  Relation,
 } from 'typeorm';
 
 @Entity('Usuario')
@@ -19,5 +20,5 @@ export class Auth {
   correo: string;
   @OneToOne(() => Personal, (personal) => personal.usuario)
   @JoinColumn()
-  personal: Personal;
+  personal: Relation<Personal>;
 }

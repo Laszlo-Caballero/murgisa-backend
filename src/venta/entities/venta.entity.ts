@@ -9,6 +9,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  Relation,
 } from 'typeorm';
 import { PagoServicio } from './pagoServicio.entity';
 import { NotaSalida } from '../../nota-salida/entities/nota-salida.entity';
@@ -37,7 +38,7 @@ export class Venta {
   asignacionPersonal: AsignacionPersonal[];
 
   @ManyToOne(() => Cliente, (cliente) => cliente.ventas)
-  cliente: Cliente;
+  cliente: Relation<Cliente>;
 
   @ManyToMany(() => Servicio)
   @JoinTable()

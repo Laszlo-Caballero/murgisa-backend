@@ -4,6 +4,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  Relation,
 } from 'typeorm';
 import { Venta } from './venta.entity';
 import { FormaPago } from '../../forma-pago/entities/forma-pago.entity';
@@ -19,7 +20,7 @@ export class PagoServicio {
   estado: boolean;
 
   @ManyToOne(() => Venta, (venta) => venta.pagos)
-  venta: Venta;
+  venta: Relation<Venta>;
 
   @ManyToOne(() => FormaPago, (formaPago) => formaPago.pagos)
   formaPago: FormaPago;

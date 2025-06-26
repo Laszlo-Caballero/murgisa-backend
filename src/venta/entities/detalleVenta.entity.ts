@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Relation,
+} from 'typeorm';
 import { Venta } from './venta.entity';
 import { Recurso } from '../../recurso/entities/recurso.entity';
 
@@ -12,7 +18,7 @@ export class DetalleVenta {
   estado: boolean;
 
   @ManyToOne(() => Venta, (venta) => venta.detalleVenta)
-  venta: Venta;
+  venta: Relation<Venta>;
   @ManyToOne(() => Recurso, (recurso) => recurso.detalleVenta)
   recurso: Recurso;
 }

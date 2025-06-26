@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Relation,
+} from 'typeorm';
 import { Personal } from './personal.entity';
 import { Venta } from '../../venta/entities/venta.entity';
 
@@ -16,5 +22,5 @@ export class AsignacionPersonal {
   personal: Personal;
 
   @ManyToOne(() => Venta, (venta) => venta.asignacionPersonal)
-  venta: Venta;
+  venta: Relation<Venta>;
 }
