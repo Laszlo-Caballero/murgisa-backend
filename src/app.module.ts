@@ -31,7 +31,7 @@ import { ProveedorModule } from './proveedor/proveedor.module';
       database: process.env.DB_NAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       options: {
-        encrypt: false,
+        encrypt: process.env.ENCRYPT === 'true',
         trustServerCertificate: true,
       },
     }),
