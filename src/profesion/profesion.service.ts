@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { CreateProfesionDto } from './dto/create-profesion.dto';
 import { UpdateProfesionDto } from './dto/update-profesion.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -37,27 +37,41 @@ export class ProfesionService {
   }
 
   async findAll() {
-    const [profesiones, count] = await this.profesionRespository.findAndCount();
+    const [profesiones, total] = await this.profesionRespository.findAndCount();
     const profesionesActivas = await this.profesionRespository.countBy({
       estado: true,
     });
-    const queryBuilder = await this.profesionRespository
+
+    const personalAsignado = await this.profesionRespository
+      .createQueryBuilder('asignado')
+      .leftJoin('asignado.personal', 'personal')
+      .getCount();
+
+    // const sql = await this.profesionRespository.query(
+    //   'SELECT * FROM profesion',
+    // );
+    // console.log('SQL Query:', sql); <- PUEDE SER UTIL
+
+    const profesionMayor = await this.profesionRespository
       .createQueryBuilder('profesion')
-      .loadRelationCountAndMap(
-        'profesion.personalCount',
-        'profesion.personal',
-        'personal',
-      )
-      .where('', { estado: true })
-      .getOne();
+      .leftJoin('profesion.personal', 'pe')
+      .select('profesion.idProfesion', 'idProfesion')
+      .addSelect('profesion.titulo', 'titulo')
+      .addSelect('COUNT(pe.profesionIdProfesion)', 'cantidad')
+      .groupBy('profesion.idProfesion, profesion.titulo')
+      .orderBy('cantidad', 'DESC')
+      .limit(1)
+      .getRawOne();
 
     return {
       message: 'Professions retrieved successfully',
       status: 200,
       data: {
         profesiones,
-        total: count,
+        total,
         profesionesActivas,
+        personalAsignado,
+        profesionMayor,
       },
     };
   }
