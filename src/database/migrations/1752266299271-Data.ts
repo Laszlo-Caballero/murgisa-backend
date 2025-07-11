@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class Login1752116798582 implements MigrationInterface {
+export class Data1752266299271 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
             insert into cargo (cargo, descripcion, estado) values (
@@ -32,7 +32,73 @@ export class Login1752116798582 implements MigrationInterface {
     await queryRunner.query(`
             update personal set usuarioIdUsuario = 1  where idPersonal = 1
         `);
+
+    await queryRunner.query(`INSERT INTO ciudad (nombre) VALUES
+('Abancay'),
+('Arequipa'),
+('Ayacucho'),
+('Cajamarca'),
+('Callao'),
+('Chiclayo'),
+('Chimbote'),
+('Chincha Alta'),
+('Cuzco'),
+('Huancayo'),
+('Huánuco'),
+('Ica'),
+('Iquitos'),
+('Juliaca'),
+('Lambayeque'),
+('Lima'),
+('Piura'),
+('Pucallpa'),
+('Puno'),
+('Tacna'),
+('Talara'),
+('Tarapoto'),
+('Trujillo'),
+('Tumbes');
+`);
+
+    await queryRunner.query(`
+            Insert into disponibilidad (disponibilidad) values
+            ('Disponible'),
+            ('En Mantenimiento'),
+            ('Alquilado'),
+            ('No Disponible')
+            `);
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {}
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`DELETE FROM ciudad WHERE nombre IN
+('Abancay',
+'Arequipa',
+'Ayacucho',
+'Cajamarca',
+'Callao',
+'Chiclayo',
+'Chimbote',
+'Chincha Alta',
+'Cuzco',
+'Huancayo',
+'Huánuco',
+'Ica',
+'Iquitos',
+'Juliaca',
+'Lambayeque',
+'Lima',
+'Piura',
+'Pucallpa',
+'Puno',
+'Tacna',
+'Talara',
+'Tarapoto',
+'Trujillo',
+'Tumbes');
+`);
+
+    await queryRunner.query(`
+            Delete from disponibilidad where disponibilidad in ('Disponible', 'No Disponible');
+            `);
+  }
 }

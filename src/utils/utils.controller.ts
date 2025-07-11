@@ -14,4 +14,9 @@ export class UtilsController {
   getDisponibilidad() {
     return this.utilsService.getDisponibilidad();
   }
+
+  @Get('horarios')
+  getHorarios() {
+    return this.utilsService.getHorarios();
+  }
 }
