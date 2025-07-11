@@ -11,8 +11,8 @@ export class Departamento {
   descripcion: string;
   @Column({ default: true })
   estado: boolean;
-  @Column({ type: 'float', default: 0 })
-  presupuesto: number;
+  @Column({ length: "MAX",default:"" })
+  presupuesto: string;
 
   @OneToMany(() => Personal, (personal) => personal.departamento)
   personal: Personal[];
