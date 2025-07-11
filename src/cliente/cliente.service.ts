@@ -76,6 +76,23 @@ export class ClienteService {
     return cliente;
   }
 
+  async findOneByRuc(ruc: string) {
+    const cliente = await this.clienteRepository.findOne({
+      where: { ruc },
+      relations: ['ciudad'],
+    });
+
+    if (!cliente) {
+      throw new HttpException('Cliente no encontrado', 404);
+    }
+
+    return {
+      message: 'Cliente retrieved successfully',
+      status: 200,
+      data: cliente,
+    };
+  }
+
   async update(id: number, updateClienteDto: UpdateClienteDto) {
     const findCliente = await this.clienteRepository.findOneBy({
       idCliente: id,

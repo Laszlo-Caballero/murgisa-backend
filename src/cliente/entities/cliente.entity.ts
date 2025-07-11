@@ -18,7 +18,8 @@ export class Cliente {
 
   @Column({ type: 'char', length: 8 })
   dni: string;
-
+  @Column({ type: 'char', length: 11, default: '' })
+  ruc: string;
   @Column()
   correo: string;
 

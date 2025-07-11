@@ -5,12 +5,19 @@ import {
   IsString,
   Length,
   Min,
+  MinLength,
 } from 'class-validator';
 
 export class CreateClienteDto {
   @IsString()
   @IsNotEmpty()
   nombre: string; // <- string; number, date, boolean, etc., "a"
+
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(11)
+  @Length(11)
+  ruc: string;
 
   @IsString()
   @IsNotEmpty()

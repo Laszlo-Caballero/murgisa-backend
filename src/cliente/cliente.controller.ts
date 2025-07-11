@@ -29,6 +29,10 @@ export class ClienteController {
   findOne(@Param('id') id: string) {
     return this.clienteService.findOne(+id);
   }
+  @Get('ruc/:ruc')
+  findOneByRuc(@Param('ruc') ruc: string) {
+    return this.clienteService.findOneByRuc(ruc);
+  }
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updateClienteDto: UpdateClienteDto) {
