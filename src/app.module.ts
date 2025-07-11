@@ -17,10 +17,10 @@ import { NotaSalidaModule } from './nota-salida/nota-salida.module';
 import { RecursoModule } from './recurso/recurso.module';
 import { TipoRecursoModule } from './tipo-recurso/tipo-recurso.module';
 import { ProveedorModule } from './proveedor/proveedor.module';
+import { MantenimientoPreventivoModule } from './mantenimiento-preventivo/mantenimiento-preventivo.module';
 import { UtilsModule } from './utils/utils.module';
 import { TipoMantenimientoModule } from './tipo-mantenimiento/tipo-mantenimiento.module';
 import { MantenimientoCorrectivoModule } from './mantenimiento-correctivo/mantenimiento-correctivo.module';
-import { UtilsModule } from './utils/utils.module';
 
 @Module({
   imports: [
@@ -52,6 +52,7 @@ import { UtilsModule } from './utils/utils.module';
     RecursoModule,
     TipoRecursoModule,
     ProveedorModule,
+    MantenimientoPreventivoModule,
     UtilsModule,
     MantenimientoCorrectivoModule,
     TipoMantenimientoModule,

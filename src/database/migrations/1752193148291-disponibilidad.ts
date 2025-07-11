@@ -5,6 +5,8 @@ export class Disponibilidad1752193148291 implements MigrationInterface {
     await queryRunner.query(`
             Insert into disponibilidad (disponibilidad) values
             ('Disponible'),
+            ('En Mantenimiento'),
+            ('Alquilado'),
             ('No Disponible')
             `);
   }
