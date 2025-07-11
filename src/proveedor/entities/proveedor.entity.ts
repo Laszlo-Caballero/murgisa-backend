@@ -1,3 +1,4 @@
+import { NotaEntrada } from '../../nota-entrada/entities/nota-entrada.entity';
 import { Recurso } from '../../recurso/entities/recurso.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -22,4 +23,6 @@ export class Proveedor {
 
   @OneToMany(() => Recurso, (recurso) => recurso.proveedor)
   recurso: Recurso[];
+  @OneToMany(() => NotaEntrada, (notaEntrada) => notaEntrada.proveedor)
+  notasEntrada: NotaEntrada[];
 }

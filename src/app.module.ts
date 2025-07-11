@@ -22,6 +22,7 @@ import { UtilsModule } from './utils/utils.module';
 import { TipoMantenimientoModule } from './tipo-mantenimiento/tipo-mantenimiento.module';
 import { MantenimientoCorrectivoModule } from './mantenimiento-correctivo/mantenimiento-correctivo.module';
 import { TipoServicioModule } from './tipo-servicio/tipo-servicio.module';
+import { NotaEntradaModule } from './nota-entrada/nota-entrada.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { TipoServicioModule } from './tipo-servicio/tipo-servicio.module';
     MantenimientoCorrectivoModule,
     TipoMantenimientoModule,
     TipoServicioModule,
+    NotaEntradaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

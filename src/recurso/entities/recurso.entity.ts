@@ -12,6 +12,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { NotaSalida } from '../../nota-salida/entities/nota-salida.entity';
+import { NotaEntrada } from '../../nota-entrada/entities/nota-entrada.entity';
 
 @Entity()
 export class Recurso {
@@ -53,4 +54,7 @@ export class Recurso {
 
   @OneToMany(() => NotaSalida, (notaSalida) => notaSalida.recurso)
   notasSalida: NotaSalida[];
+
+  @OneToMany(() => NotaEntrada, (notaEntrada) => notaEntrada.recurso)
+  notasEntrada: NotaEntrada[];
 }
