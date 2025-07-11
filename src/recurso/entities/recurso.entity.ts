@@ -3,6 +3,7 @@ import { Disponibilidad } from '../../utils/entities/disponibilidad.entity';
 import { Proveedor } from '../../proveedor/entities/proveedor.entity';
 import { TipoRecurso } from '../../tipo-recurso/entities/tipo-recurso.entity';
 import { DetalleVenta } from '../../venta/entities/detalleVenta.entity';
+import { MantenimientoPreventivo } from '../../mantenimiento-preventivo/entities/mantenimiento-preventivo.entity';
 import {
   Column,
   Entity,
@@ -42,4 +43,10 @@ export class Recurso {
     (mantenimientoCorrectivo) => mantenimientoCorrectivo.recurso,
   )
   mantenimientoCorrectivo: MantenimientoCorrectivo[];
+
+  @OneToMany(
+    () => MantenimientoPreventivo,
+    (mantenimientoPreventivo) => mantenimientoPreventivo.recurso,
+  )
+  mantenimientoPreventivo: MantenimientoPreventivo[];
 }

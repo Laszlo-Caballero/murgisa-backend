@@ -7,7 +7,7 @@ export class Departamento {
   idDepartamento: number;
   @Column({ length: 50, default: '' })
   titulo: string;
-  @Column({ length: "MAX" })
+  @Column({ length: "MAX",default:"" })
   descripcion: string;
   @Column({ default: true })
   estado: boolean;

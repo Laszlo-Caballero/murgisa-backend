@@ -13,7 +13,7 @@ import { Auth } from '../../auth/entities/auth.entity';
 import { Profesion } from '../../profesion/entities/profesion.entity';
 import { Departamento } from '../../departamento/entities/departamento.entity';
 import { MantenimientoCorrectivo } from '../../mantenimiento-correctivo/entities/mantenimiento-correctivo.entity';
-
+import { MantenimientoPreventivo } from '../../mantenimiento-preventivo/entities/mantenimiento-preventivo.entity';
 @Entity()
 export class Personal {
   @PrimaryGeneratedColumn()
@@ -60,4 +60,9 @@ export class Personal {
     (mantenimientoCorrectivo) => mantenimientoCorrectivo.personal,
   )
   mantenimientoCorrectivo: MantenimientoCorrectivo[];
+  @ManyToOne(
+    () => MantenimientoPreventivo,
+    (mantenimientoPreventivo) => mantenimientoPreventivo.personal,
+  )
+  mantenimientoPreventivo: MantenimientoPreventivo[];
 }
