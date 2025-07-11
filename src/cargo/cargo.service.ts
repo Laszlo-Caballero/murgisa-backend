@@ -21,12 +21,20 @@ export class CargoService {
   async create(createCargoDto: CreateCargoDto) {
     const newCargo = this.cargoRespository.create(createCargoDto);
 
+    await this.cargoRespository.save(newCargo);
+
     await this.logRepository.save({
       tipo: 'Cargo',
-      mensaje: `Se ha creado el cargo ${newCargo.cargo}`,
+      mensaje: `Nuevo Cargo ${newCargo.cargo} creado con exito`,
     });
 
-    return this.cargoRespository.save(newCargo);
+    const cargos = await this.cargoRespository.find();
+
+    return {
+      message: 'Cargo created successfully',
+      status: 201,
+      data: cargos,
+    };
   }
 
   async findAll() {
@@ -42,10 +50,13 @@ export class CargoService {
     const usuarios = await this.authRepository.count();
 
     return {
+    message: 'Cargo retrieved successfully',
+    status: 200,
+    data:{
       cargos,
       total: countCargos,
       activos: countCargosActivos,
-      usuarios,
+      usuarios,}
     };
   }
 
@@ -55,10 +66,21 @@ export class CargoService {
     });
 
     if (!cargo) {
-      throw new HttpException(`Cargo with id ${id} not found`, 404);
+      throw new HttpException(
+        {
+          message: `Cargo with id ${id} not found`,
+          status: 404,
+          data: null,
+        },
+        404,
+      );
     }
 
-    return cargo;
+    return {
+      message: 'Cargo retrieved successfully',
+      status: 200,
+      data: cargo,
+    };
   }
 
   async update(id: number, UpdateCargoDto: UpdateCargoDto) {
@@ -66,7 +88,14 @@ export class CargoService {
       idCargo: id,
     });
     if (!cargo) {
-      throw new HttpException(`Cargo with id ${id} not found`, 404);
+      throw new HttpException(
+        {
+          message: `Cargo with id ${id} not found`,
+          status: 404,
+          data: null,
+        },
+        404,
+      );
     }
 
     await this.cargoRespository.update(
@@ -78,9 +107,17 @@ export class CargoService {
       },
     );
 
+    await this.logRepository.save({
+      tipo: 'Cargo',
+      mensaje: `Cargo ${cargo.cargo} actualizado con exito`,
+    });
+
+    const cargos = await this.cargoRespository.find();
+
     return {
       message: `Cargo with id ${id} has been updated successfully`,
-      status: true,
+      status: 201,
+      data: cargos,
     };
   }
 
@@ -90,7 +127,14 @@ export class CargoService {
     });
 
     if (!cargo) {
-      throw new HttpException(`Cargo with id ${id} not found`, 404);
+      throw new HttpException(
+        {
+          message: `Cargo with id ${id} not found`,
+          status: 404,
+          data: null,
+        },
+        404,
+      );
     }
 
     await this.cargoRespository.update(
@@ -102,9 +146,18 @@ export class CargoService {
       },
     );
 
+    await this.logRepository.save({
+      tipo: 'Cargo',
+      mensaje: `Cargo ${cargo.cargo} desactivada con exito`,
+    });
+
+
+    const cargos = await this.cargoRespository.find();
+
     return {
-      message: `Cargo with id ${id} has been deactivated successfully`,
-      status: true,
+      message: `Cargo with id ${id} has been  deactivated successfully`,
+      status: 201,
+      data: cargos,
     };
   }
 }
