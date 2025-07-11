@@ -22,7 +22,4 @@ export class CreateProveedorDto {
     @IsNotEmpty()
     @MaxLength(9)
     telefono: string;
-    @IsBoolean()
-    @IsNotEmpty()
-    estado: boolean;
 }
