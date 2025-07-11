@@ -1,26 +1,134 @@
-import { Injectable } from '@nestjs/common';
 import { CreateProveedorDto } from './dto/create-proveedor.dto';
 import { UpdateProveedorDto } from './dto/update-proveedor.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Proveedor } from './entities/proveedor.entity';
+import { Repository } from 'typeorm';
+import { Log } from 'src/home/entities/log.entity';
+import { HttpException, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ProveedorService {
-  create(createProveedorDto: CreateProveedorDto) {
-    return 'This action adds a new proveedor';
+  constructor(
+    @InjectRepository(Proveedor)
+    private proveedorRepository: Repository<Proveedor>,
+    @InjectRepository(Log)
+    private logRepository: Repository<Log>,
+  ){}
+  async create(createProveedorDto: CreateProveedorDto) {
+    const newProveedor = this.proveedorRepository.create(createProveedorDto);
+    await this.proveedorRepository.save(newProveedor);
+    await this.logRepository.save({
+      tipo: 'Proveedor',
+      mensaje: `Nuevo Proveedor ${newProveedor.nombreResponsable} creado con exito`,
+    });
+    const proveedores = await this.proveedorRepository.find();
+    return {
+      message: 'Proveedor created successfully',
+      status: 201,
+      data: proveedores,
+    };
   }
 
-  findAll() {
-    return `This action returns all proveedor`;
+  async findAll() {
+    const proveedores = await this.proveedorRepository.find();
+    return proveedores;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} proveedor`;
+  async findOne(id: number) {
+    const proveedor = await this.proveedorRepository.findOneBy({
+          idProovedor: id,
+        });
+    
+        if (!proveedor) {
+          throw new HttpException(
+            {
+              message: `Proveedor with id ${id} not found`,
+              status: 404,
+              data: null,
+            },
+            404,
+          );
+        }
+    
+            return {
+          message: 'Proveedor retrieved successfully',
+          status: 200,
+          data: proveedor,
+        };
   }
 
-  update(id: number, updateProveedorDto: UpdateProveedorDto) {
-    return `This action updates a #${id} proveedor`;
+  async update(id: number, updateProveedorDto: UpdateProveedorDto) {
+    const proveedor = await this.proveedorRepository.findOneBy({
+      idProovedor: id,
+    });
+    if (!proveedor) {
+      throw new HttpException(
+        {
+          message: `Proveedor with id ${id} not found`,
+          status: 404,
+          data: null,
+        },
+        404,
+      );
+    }
+    await this.proveedorRepository.update(
+      {
+        idProovedor: id,
+      },
+      {
+        ...updateProveedorDto,
+      },
+    );
+    await this.logRepository.save({
+      tipo: 'Proveedor',
+      mensaje: `Proveedor ${proveedor.nombreResponsable} actualizada con exito`,
+    });
+
+    const proveedores = await this.proveedorRepository.find();
+
+    return {
+      message: `Proveedor with id ${id} has been updated successfully`,
+      status: 201,
+      data: proveedores,
+    };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} proveedor`;
+  async remove(id: number) {
+    const proveedor = await this.proveedorRepository.findOneBy({
+      idProovedor: id,
+    });
+
+    if (!proveedor) {
+      throw new HttpException(
+        {
+          message: `Proveedor with id ${id} not found`,
+          status: 404,
+          data: null,
+        },
+        404,
+      );
+    }
+     await this.proveedorRepository.update(
+      {
+        idProovedor: id,
+      },
+      {
+        estado: false,
+      },
+    );
+
+    await this.logRepository.save({
+      tipo: 'Proveedor',
+      mensaje: `Proveedor ${proveedor.nombreResponsable} desactivado con exito`,
+    });
+
+    const proveedores = await this.proveedorRepository.find();
+
+    return {
+      message: `Proveedor with id ${id} has been deactivated successfully`,
+      status: 200,
+      data: proveedores,
+    };
+
   }
 }
