@@ -1,26 +1,145 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateRecursoDto } from './dto/create-recurso.dto';
 import { UpdateRecursoDto } from './dto/update-recurso.dto';
+import { Recurso } from './entities/recurso.entity';
+import { Proveedor } from 'src/proveedor/entities/proveedor.entity';
+import { TipoRecurso } from 'src/tipo-recurso/entities/tipo-recurso.entity';
+import { Disponibilidad } from 'src/utils/entities/disponibilidad.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class RecursoService {
-  create(createRecursoDto: CreateRecursoDto) {
-    return 'This action adds a new recurso';
+    constructor(
+      @InjectRepository(Recurso)
+      private readonly recursoRepository: Repository<Recurso>,
+      @InjectRepository(Proveedor)
+      private readonly proveedorRepository: Repository<Proveedor>,
+      @InjectRepository(TipoRecurso)
+      private readonly tipoRepository: Repository<TipoRecurso>,
+      @InjectRepository(Disponibilidad)
+      private readonly disponibilidadRepository: Repository<Disponibilidad>,
+    ) {}
+
+
+  async create(createRecursoDto: CreateRecursoDto) {
+    const { tipoId, proveedorId, disponibilidadId, ...recursoData } =
+    createRecursoDto;
+
+    const tipoRecurso = await this.tipoRepository.findOneBy({
+      idTipoRecurso: tipoId,
+    });
+    if (!tipoRecurso) {
+      throw new HttpException(
+        'No se encontró el tipo de recurso con el ID proporcionado',
+        404,
+      );
+    }
+
+    const proveedor = await this.proveedorRepository.findOneBy({ idProovedor: proveedorId });
+
+    if (!proveedor) {
+      throw new HttpException(
+        'No se encontró el proveedor con el ID proporcionado',
+        404,
+      );
+    }
+
+    const disponibilidad = await this.disponibilidadRepository.findOneBy({
+      disponibilidadId: disponibilidadId,
+    });
+    if (!disponibilidad) {
+      throw new HttpException(
+        'No se encontró la disponibilidad con el ID proporcionado',
+        404,
+      );
+    }
+
+    const newRecurso = this.recursoRepository.create({
+      ...recursoData,
+      tipoRecurso,
+      proveedor,
+      disponibilidad,
+    });
+
+    return this.recursoRepository.save(newRecurso);
   }
 
   findAll() {
-    return `This action returns all recurso`;
+    return this.recursoRepository.find({
+      relations: ['tipoRecurso', 'proveedor', 'disponibilidad'],
+    });
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} recurso`;
+    const recurso = this.recursoRepository.findOne({
+      where: { idRecurso: id },
+      relations: ['tipoRecurso', 'proveedor', 'disponibilidad'],
+    });
+
+    if (!recurso) {
+      throw new HttpException('Recurso not found', 404);
+    }
+
+    return recurso;
   }
 
-  update(id: number, updateRecursoDto: UpdateRecursoDto) {
-    return `This action updates a #${id} recurso`;
+  async update(id: number, updateRecursoDto: UpdateRecursoDto) {
+    const { tipoId, proveedorId, disponibilidadId, ...recursoData } =
+    updateRecursoDto;
+
+    const recurso = await this.recursoRepository.findOneBy({
+      idRecurso: id,
+    });
+    if (!recurso) {
+      throw new HttpException('Recurso not found', 404);
+    }
+
+    const tipoRecurso = await this.tipoRepository.findOneBy({
+      idTipoRecurso: tipoId,
+    });
+    if (!tipoRecurso) {
+      throw new HttpException('Tipo de recurso not found', 404);
+    }
+
+    const proveedor = await this.proveedorRepository.findOneBy({ idProovedor: proveedorId });
+    if (!proveedor) {
+      throw new HttpException('Proveedor not found', 404);
+    }
+
+    const disponibilidad = await this.disponibilidadRepository.findOneBy({
+      disponibilidadId: disponibilidadId,
+    });
+    if (!disponibilidad) {
+      throw new HttpException('Disponibilidad not found', 404);
+    }
+
+    await this.recursoRepository.update(id, {
+      ...recursoData,
+      tipoRecurso,
+      proveedor,
+      disponibilidad,
+    });
+
+    return {
+      message: 'Recurso updated successfully',
+      status: true,
+    };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} recurso`;
+  async remove(id: number) {
+    const recurso = await this.recursoRepository.findOneBy({
+      idRecurso: id,
+    });
+    if (!recurso) {
+      throw new HttpException('Recurso not found', 404);
+    }
+
+    await this.recursoRepository.update(id, { estado: false });
+
+    return {
+      message: 'Recurso removed successfully',
+      status: true,
+    };
   }
 }

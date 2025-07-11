@@ -1,3 +1,4 @@
+import { Disponibilidad } from '../../utils/entities/disponibilidad.entity';
 import { Proveedor } from '../../proveedor/entities/proveedor.entity';
 import { TipoRecurso } from '../../tipo-recurso/entities/tipo-recurso.entity';
 import { DetalleVenta } from '../../venta/entities/detalleVenta.entity';
@@ -22,8 +23,12 @@ export class Recurso {
 
   @ManyToOne(() => TipoRecurso, (tipoRecurso) => tipoRecurso.recurso)
   tipoRecurso: TipoRecurso;
+
   @ManyToOne(() => Proveedor, (proveedor) => proveedor.recurso)
   proveedor: Proveedor;
+
+  @ManyToOne(() => Disponibilidad, (disponibilidad) => disponibilidad.disponibilidad)
+  disponibilidad: Disponibilidad
 
   @OneToMany(() => DetalleVenta, (detalleVenta) => detalleVenta.recurso)
   detalleVenta: DetalleVenta[];

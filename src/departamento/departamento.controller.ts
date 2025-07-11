@@ -16,7 +16,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 @Controller('departamento')
 export class DepartamentoController {
   constructor(private readonly departamentoService: DepartamentoService) {}
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createDepartamentoDto: CreateDepartamentoDto) {
     return this.departamentoService.create(createDepartamentoDto);
@@ -25,12 +25,12 @@ export class DepartamentoController {
   findAll() {
     return this.departamentoService.findAll();
   }
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.departamentoService.findOne(+id);
   }
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -39,7 +39,7 @@ export class DepartamentoController {
     return this.departamentoService.update(+id, updateDepartamentoDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.departamentoService.remove(+id);
