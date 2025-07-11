@@ -134,8 +134,21 @@ export class ClienteService {
       throw new HttpException('Cliente no encontrado', 404);
     }
 
-    await this.clienteRepository.delete({ idCliente: id });
+    await this.clienteRepository.update({ idCliente: id }, { estado: false });
 
-    return `se elimino el cliente con id ${id}`;
+    await this.logRepository.save({
+      mensaje: `El cliente ${findCliente.nombre} eliminado`,
+      tipo: 'Cliente',
+    });
+
+    const clientes = await this.clienteRepository.find({
+      relations: ['ciudad'],
+    });
+
+    return {
+      message: `Cliente with ID ${id} deleted successfully`,
+      status: 200,
+      data: clientes,
+    };
   }
 }

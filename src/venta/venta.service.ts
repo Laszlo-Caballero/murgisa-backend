@@ -194,6 +194,10 @@ export class VentaService {
         'notasSalida',
         'detalleVenta',
         'detalleVenta.recurso',
+        'detalleVenta.recurso.tipoRecurso',
+        'asignacionPersonal.personal',
+        'asignacionPersonal.personal.profesion',
+        'pagos.formaPago',
       ],
     });
 
@@ -214,6 +218,10 @@ export class VentaService {
         'notasSalida',
         'detalleVenta',
         'detalleVenta.recurso',
+        'detalleVenta.recurso.tipoRecurso',
+        'asignacionPersonal.personal',
+        'asignacionPersonal.personal.profesion',
+        'pagos.formaPago',
       ],
     });
 
@@ -235,6 +243,10 @@ export class VentaService {
         'notasSalida',
         'detalleVenta',
         'detalleVenta.recurso',
+        'detalleVenta.recurso.tipoRecurso',
+        'asignacionPersonal.personal',
+        'asignacionPersonal.personal.profesion',
+        'pagos.formaPago',
       ],
     });
 
@@ -274,6 +286,10 @@ export class VentaService {
         'notasSalida',
         'detalleVenta',
         'detalleVenta.recurso',
+        'detalleVenta.recurso.tipoRecurso',
+        'asignacionPersonal.personal',
+        'asignacionPersonal.personal.profesion',
+        'pagos.formaPago',
       ],
     });
 
