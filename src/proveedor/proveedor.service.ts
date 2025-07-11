@@ -13,7 +13,7 @@ export class ProveedorService {
     private proveedorRepository: Repository<Proveedor>,
     @InjectRepository(Log)
     private logRepository: Repository<Log>,
-  ){}
+  ) {}
   async create(createProveedorDto: CreateProveedorDto) {
     const newProveedor = this.proveedorRepository.create(createProveedorDto);
     await this.proveedorRepository.save(newProveedor);
@@ -31,30 +31,34 @@ export class ProveedorService {
 
   async findAll() {
     const proveedores = await this.proveedorRepository.find();
-    return proveedores;
+    return {
+      message: 'Proveedor created successfully',
+      status: 201,
+      data: proveedores,
+    };
   }
 
   async findOne(id: number) {
     const proveedor = await this.proveedorRepository.findOneBy({
-          idProovedor: id,
-        });
-    
-        if (!proveedor) {
-          throw new HttpException(
-            {
-              message: `Proveedor with id ${id} not found`,
-              status: 404,
-              data: null,
-            },
-            404,
-          );
-        }
-    
-            return {
-          message: 'Proveedor retrieved successfully',
-          status: 200,
-          data: proveedor,
-        };
+      idProovedor: id,
+    });
+
+    if (!proveedor) {
+      throw new HttpException(
+        {
+          message: `Proveedor with id ${id} not found`,
+          status: 404,
+          data: null,
+        },
+        404,
+      );
+    }
+
+    return {
+      message: 'Proveedor retrieved successfully',
+      status: 200,
+      data: proveedor,
+    };
   }
 
   async update(id: number, updateProveedorDto: UpdateProveedorDto) {
@@ -108,7 +112,7 @@ export class ProveedorService {
         404,
       );
     }
-     await this.proveedorRepository.update(
+    await this.proveedorRepository.update(
       {
         idProovedor: id,
       },
@@ -129,6 +133,5 @@ export class ProveedorService {
       status: 200,
       data: proveedores,
     };
-
   }
 }
