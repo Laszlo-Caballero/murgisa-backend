@@ -44,7 +44,7 @@ export class Venta {
   @JoinTable()
   servicios: Servicio[];
 
-  @ManyToOne(() => PagoServicio, (pagoServicio) => pagoServicio.venta)
+  @OneToMany(() => PagoServicio, (pagoServicio) => pagoServicio.venta)
   pagos: PagoServicio[];
 
   @OneToMany(() => NotaSalida, (notaSalida) => notaSalida.venta)

@@ -146,11 +146,11 @@ export class VentaService {
       servicios: findServicios,
     });
 
-    await this.ventaRepository.save(newVenta);
+    const saveVenta = await this.ventaRepository.save(newVenta);
     const asignaciones = personales.map((p) => {
       const asignacion = this.asignacionPersonalRepository.create({
         personal: p,
-        venta: newVenta,
+        venta: saveVenta,
         costo: p.sueldo,
         estado: true,
       });
@@ -162,7 +162,7 @@ export class VentaService {
     const recursoAsignaciones = recurso.map((r) => {
       const asignacion = this.detalleRepository.create({
         recurso: r,
-        venta: newVenta,
+        venta: saveVenta,
         estado: true,
         precio: r.precio,
       });
@@ -172,7 +172,7 @@ export class VentaService {
     await Promise.all(recursoAsignaciones);
 
     const pagoServicio = this.pagoServicioRepository.create({
-      venta: newVenta,
+      venta: saveVenta,
       formaPago,
     });
 
@@ -193,6 +193,7 @@ export class VentaService {
         'pagos',
         'notasSalida',
         'detalleVenta',
+        'detalleVenta.recurso',
       ],
     });
 
@@ -212,6 +213,7 @@ export class VentaService {
         'pagos',
         'notasSalida',
         'detalleVenta',
+        'detalleVenta.recurso',
       ],
     });
 
@@ -232,6 +234,7 @@ export class VentaService {
         'pagos',
         'notasSalida',
         'detalleVenta',
+        'detalleVenta.recurso',
       ],
     });
 
