@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { Cargo } from 'src/cargo/entities/cargo.entity';
 import { Profesion } from 'src/profesion/entities/profesion.entity';
 import { Departamento } from 'src/departamento/entities/departamento.entity';
+import { Log } from 'src/home/entities/log.entity';
 
 @Injectable()
 export class PersonalService {
@@ -19,6 +20,8 @@ export class PersonalService {
     private readonly profesionRepository: Repository<Profesion>,
     @InjectRepository(Departamento)
     private readonly departamentoRepository: Repository<Departamento>,
+    @InjectRepository(Log)
+    private readonly logRepository: Repository<Log>,
   ) {}
 
   async create(createPersonalDto: CreatePersonalDto) {
@@ -60,17 +63,40 @@ export class PersonalService {
       profesion,
       departamento,
     });
-    return this.personalRepository.save(newPersonal);
-  }
 
-  findAll() {
-    return this.personalRepository.find({
+    await this.personalRepository.save(newPersonal);
+
+    const logEntry = this.logRepository.create({
+      tipo: 'Personal',
+      mensaje: `Nuevo personal creado: ${newPersonal.nombre} ${newPersonal.apellido_paterno}`,
+    });
+
+    await this.logRepository.save(logEntry);
+
+    const personal = await this.personalRepository.find({
       relations: ['cargo', 'profesion', 'usuario', 'departamento'],
     });
+
+    return {
+      message: 'Personal created successfully',
+      status: 201,
+      data: personal,
+    };
   }
 
-  findOne(id: number) {
-    const personal = this.personalRepository.findOne({
+  async findAll() {
+    const personal = await this.personalRepository.find({
+      relations: ['cargo', 'profesion', 'usuario', 'departamento'],
+    });
+    return {
+      message: 'Personal retrieved successfully',
+      status: 200,
+      data: personal,
+    };
+  }
+
+  async findOne(id: number) {
+    const personal = await this.personalRepository.findOne({
       where: { idPersonal: id },
       relations: ['cargo', 'profesion', 'usuario', 'departamento'],
     });
@@ -79,7 +105,11 @@ export class PersonalService {
       throw new HttpException('Personal not found', 404);
     }
 
-    return personal;
+    return {
+      message: 'Personal retrieved successfully',
+      status: 200,
+      data: personal,
+    };
   }
 
   async update(id: number, updatePersonalDto: UpdatePersonalDto) {
@@ -117,9 +147,19 @@ export class PersonalService {
       departamento,
     });
 
+    await this.logRepository.save({
+      tipo: 'Personal',
+      mensaje: `Personal actualizado: ${personal.nombre} ${personal.apellido_paterno}`,
+    });
+
+    const personales = await this.personalRepository.find({
+      relations: ['cargo', 'profesion', 'usuario', 'departamento'],
+    });
+
     return {
       message: 'Personal updated successfully',
-      status: true,
+      status: 200,
+      data: personales,
     };
   }
 
@@ -133,9 +173,19 @@ export class PersonalService {
 
     await this.personalRepository.update(id, { estado: false });
 
+    await this.logRepository.save({
+      tipo: 'Personal',
+      mensaje: `El Personal ${personal.nombre} ${personal.apellido_paterno} fue desactivado con éxito`,
+    });
+
+    const personales = await this.personalRepository.find({
+      relations: ['cargo', 'profesion', 'usuario', 'departamento'],
+    });
+
     return {
       message: 'Personal removed successfully',
-      status: true,
+      status: 200,
+      data: personales,
     };
   }
 }
