@@ -72,7 +72,7 @@ export class VentaService {
         ? await this.clienteRepository.findOne({
             where: { idCliente: clienteId },
           })
-        : await this.clienteRepository.create({
+        : await this.clienteRepository.save({
             ciudad,
             ...newCliente,
             fechaNacimiento: parseDate,
@@ -170,11 +170,6 @@ export class VentaService {
     });
 
     await Promise.all(recursoAsignaciones);
-
-    const totalServicios = findServicios.reduce(
-      (total, servicio) => total + servicio.precio,
-      0,
-    );
 
     const pagoServicio = this.pagoServicioRepository.create({
       venta: newVenta,

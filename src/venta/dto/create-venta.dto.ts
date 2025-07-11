@@ -25,7 +25,6 @@ export class CreateVentaDto {
   personal: number[];
 
   @IsNumber()
-  @IsPositive()
   clienteId: number;
 
   @IsArray()
