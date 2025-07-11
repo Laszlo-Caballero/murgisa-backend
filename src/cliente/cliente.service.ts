@@ -73,7 +73,11 @@ export class ClienteService {
       throw new HttpException('Cliente no encotrado', 404);
     }
 
-    return cliente;
+    return {
+      message: 'Cliente retrieved successfully',
+      status: 200,
+      data: cliente,
+    };
   }
 
   async findOneByRuc(ruc: string) {
@@ -119,9 +123,19 @@ export class ClienteService {
       },
     );
 
+    await this.logRepository.save({
+      mensaje: `Se actualizo el cliente ${findCliente.nombre} con exito`,
+      tipo: 'Cliente',
+    });
+
+    const clientes = await this.clienteRepository.find({
+      relations: ['ciudad'],
+    });
+
     return {
       message: `Se actualizo el cliente con id ${id}`,
-      status: true,
+      status: 200,
+      data: clientes,
     };
   }
 
