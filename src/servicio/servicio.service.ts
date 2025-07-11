@@ -117,6 +117,8 @@ export class ServicioService {
         404,
       );
     }
+    delete dto.tipoServicioId;
+
     await this.servicioRepository.update(id, {
       ...dto,
       tipoServicio,
