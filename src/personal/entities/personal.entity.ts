@@ -12,6 +12,7 @@ import { Cargo } from '../../cargo/entities/cargo.entity';
 import { Auth } from '../../auth/entities/auth.entity';
 import { Profesion } from '../../profesion/entities/profesion.entity';
 import { Departamento } from '../../departamento/entities/departamento.entity';
+import { MantenimientoCorrectivo } from '../../mantenimiento-correctivo/entities/mantenimiento-correctivo.entity';
 
 @Entity()
 export class Personal {
@@ -53,4 +54,10 @@ export class Personal {
 
   @ManyToOne(() => Departamento, (departamento) => departamento.personal)
   departamento: Departamento;
+
+  @ManyToOne(
+    () => MantenimientoCorrectivo,
+    (mantenimientoCorrectivo) => mantenimientoCorrectivo.personal,
+  )
+  mantenimientoCorrectivo: MantenimientoCorrectivo[];
 }
