@@ -15,13 +15,21 @@ export class FormaPagoService {
     private logRepository: Repository<Log>,
   ) {}
 
-  create(createFormaPagoDto: CreateFormaPagoDto) {
+  async create(createFormaPagoDto: CreateFormaPagoDto) {
     const newFormaPago = this.formaPagoRepository.create(createFormaPagoDto);
-    this.logRepository.save({
+    await this.formaPagoRepository.save(newFormaPago);
+    await this.logRepository.save({
       tipo: 'Forma de Pago',
       mensaje: `Se ha creado la forma de pago ${newFormaPago.tipo}`,
     });
-    return this.formaPagoRepository.save(newFormaPago);
+
+    const formaPago = await this.formaPagoRepository.find();
+
+    return {
+      message: 'Forma de pago created successfully',
+      status: 200,
+      data: formaPago,
+    };
   }
 
   async findAll() {
@@ -56,9 +64,17 @@ export class FormaPagoService {
     }
     await this.formaPagoRepository.update(id, updateFormaPagoDto);
 
+    await this.logRepository.save({
+      mensaje: `Se ha actualizado la forma de pago ${formaPago.tipo}`,
+      tipo: 'Forma de Pago',
+    });
+
+    const formasPago = await this.formaPagoRepository.find();
+
     return {
       message: `Forma de pago with id ${id} has been updated successfully`,
-      status: true,
+      status: 201,
+      data: formasPago,
     };
   }
 
@@ -79,9 +95,18 @@ export class FormaPagoService {
         estado: false,
       },
     );
+
+    await this.logRepository.save({
+      mensaje: `Se ha Desactivado la forma de pago ${formaPago.tipo}`,
+      tipo: 'Forma de Pago',
+    });
+
+    const formasPago = await this.formaPagoRepository.find();
+
     return {
       message: `Forma de pago with id ${id} has been removed successfully`,
-      status: true,
+      status: 200,
+      data: formasPago,
     };
   }
 }
