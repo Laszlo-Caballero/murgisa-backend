@@ -11,6 +11,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { NotaSalida } from '../../nota-salida/entities/nota-salida.entity';
 
 @Entity()
 export class Recurso {
@@ -49,4 +50,7 @@ export class Recurso {
     (mantenimientoPreventivo) => mantenimientoPreventivo.recurso,
   )
   mantenimientoPreventivo: MantenimientoPreventivo[];
+
+  @OneToMany(() => NotaSalida, (notaSalida) => notaSalida.recurso)
+  notasSalida: NotaSalida[];
 }

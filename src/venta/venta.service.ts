@@ -232,8 +232,8 @@ export class VentaService {
     };
   }
 
-  findOne(id: number) {
-    const venta = this.ventaRepository.findOne({
+  async findOne(id: number) {
+    const venta = await this.ventaRepository.findOne({
       where: { idVenta: id },
       relations: [
         'asignacionPersonal',
