@@ -9,6 +9,12 @@ export class Servicio {
   @Column({ length: 100 })
   nombre: string;
 
+  @Column()
+  descripcion: string;
+
+  @Column()
+  duracion: string;
+
   @Column({ default: true })
   estado: boolean;
 
