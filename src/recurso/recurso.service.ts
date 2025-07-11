@@ -65,6 +65,7 @@ export class RecursoService {
       proveedor,
       disponibilidad,
     });
+    await this.recursoRepository.save(newRecurso);
 
     const log = this.logRepository.create({
       mensaje: `Nuevo recurso ${newRecurso.nombre} creado con exito`,
@@ -87,7 +88,11 @@ export class RecursoService {
     const recursos = await this.recursoRepository.find({
       relations: ['tipoRecurso', 'proveedor', 'disponibilidad'],
     });
-    return recursos;
+    return {
+      message: 'Recurso created successfully',
+      status: 200,
+      data: recursos,
+    };
   }
 
   findOne(id: number) {

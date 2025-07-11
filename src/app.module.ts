@@ -21,6 +21,7 @@ import { MantenimientoPreventivoModule } from './mantenimiento-preventivo/manten
 import { UtilsModule } from './utils/utils.module';
 import { TipoMantenimientoModule } from './tipo-mantenimiento/tipo-mantenimiento.module';
 import { MantenimientoCorrectivoModule } from './mantenimiento-correctivo/mantenimiento-correctivo.module';
+import { TipoServicioModule } from './tipo-servicio/tipo-servicio.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { MantenimientoCorrectivoModule } from './mantenimiento-correctivo/manten
     UtilsModule,
     MantenimientoCorrectivoModule,
     TipoMantenimientoModule,
+    TipoServicioModule,
   ],
   controllers: [AppController],
   providers: [AppService],
