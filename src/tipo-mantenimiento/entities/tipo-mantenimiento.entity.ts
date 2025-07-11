@@ -22,6 +22,9 @@ export class TipoMantenimiento {
   @Column()
   duracion: string;
 
+  @Column({ default: true })
+  estado: boolean;
+
   @ManyToMany(
     () => MantenimientoCorrectivo,
     (mantenimientoCorrectivo) => mantenimientoCorrectivo.tipo,
