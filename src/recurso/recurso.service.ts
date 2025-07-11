@@ -7,6 +7,8 @@ import { TipoRecurso } from 'src/tipo-recurso/entities/tipo-recurso.entity';
 import { Disponibilidad } from 'src/utils/entities/disponibilidad.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Log } from 'src/home/entities/log.entity';
+
 
 @Injectable()
 export class RecursoService {
@@ -19,6 +21,8 @@ export class RecursoService {
       private readonly tipoRepository: Repository<TipoRecurso>,
       @InjectRepository(Disponibilidad)
       private readonly disponibilidadRepository: Repository<Disponibilidad>,
+      @InjectRepository(Log) private logRepository: Repository<Log>,
+      
     ) {}
 
 
@@ -62,13 +66,28 @@ export class RecursoService {
       disponibilidad,
     });
 
-    return this.recursoRepository.save(newRecurso);
-  }
+    const log = this.logRepository.create({
+      mensaje: `Nuevo recurso ${newRecurso.nombre} creado con exito`,
+      tipo: 'Recurso',
+    });
+    await this.logRepository.save(log);
 
-  findAll() {
-    return this.recursoRepository.find({
+    const recursos = await this.recursoRepository.find({
       relations: ['tipoRecurso', 'proveedor', 'disponibilidad'],
     });
+
+    return {
+      message: 'Recurso created successfully',
+      status: 200,
+      data: recursos,
+    };
+  }
+
+  async findAll() {
+    const recursos = await this.recursoRepository.find({
+      relations: ['tipoRecurso', 'proveedor', 'disponibilidad'],
+    });
+    return recursos;
   }
 
   findOne(id: number) {
