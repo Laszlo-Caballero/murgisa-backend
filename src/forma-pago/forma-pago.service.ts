@@ -51,7 +51,11 @@ export class FormaPagoService {
       throw new HttpException(`Forma de pago with id ${id} not found`, 404);
     }
 
-    return formaPago;
+    return {
+      message: 'Forma de pago retrieved successfully',
+      status: 200,
+      data: formaPago,
+    };
   }
 
   async update(id: number, updateFormaPagoDto: UpdateFormaPagoDto) {
