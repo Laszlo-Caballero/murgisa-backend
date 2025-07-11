@@ -28,7 +28,7 @@ export class DepartamentoService {
     const departamentos = await this.departamentoRespository.find();
 
     return {
-      message: 'Profesion created successfully',
+      message: 'Departamento created successfully',
       status: 201,
       data: departamentos,
     };
@@ -37,7 +37,11 @@ export class DepartamentoService {
 
   async findAll() {
     const departamentos = await this.departamentoRespository.find();
-    return departamentos;
+    return {
+      message: 'Recurso created successfully',
+      status: 200,
+      data: departamentos,
+    };
   }
 
   async findOne(id: number) {
