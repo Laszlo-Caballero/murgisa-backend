@@ -20,5 +20,5 @@ export class DetalleVenta {
   @ManyToOne(() => Venta, (venta) => venta.detalleVenta)
   venta: Relation<Venta>;
   @ManyToOne(() => Recurso, (recurso) => recurso.detalleVenta)
-  recurso: Recurso;
+  recurso: Relation<Recurso>;
 }
