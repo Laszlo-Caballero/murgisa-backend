@@ -24,8 +24,14 @@ export class FormaPagoService {
     return this.formaPagoRepository.save(newFormaPago);
   }
 
-  findAll() {
-    return this.formaPagoRepository.find();
+  async findAll() {
+    const formaPago = await this.formaPagoRepository.find();
+
+    return {
+      message: 'Lista de formas de pago',
+      data: formaPago,
+      status: 200,
+    };
   }
 
   async findOne(id: number) {
