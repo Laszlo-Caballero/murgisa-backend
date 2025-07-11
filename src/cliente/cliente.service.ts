@@ -6,12 +6,14 @@ import { Cliente } from './entities/cliente.entity';
 import { Repository } from 'typeorm';
 import { Ciudad } from './entities/ciudades.entity';
 import { parse } from 'date-fns';
+import { Log } from 'src/home/entities/log.entity';
 
 @Injectable()
 export class ClienteService {
   constructor(
     @InjectRepository(Cliente) private clienteRepository: Repository<Cliente>,
     @InjectRepository(Ciudad) private ciudadRepository: Repository<Ciudad>,
+    @InjectRepository(Log) private logRepository: Repository<Log>,
   ) {}
 
   async create(createClienteDto: CreateClienteDto) {
@@ -34,7 +36,23 @@ export class ClienteService {
       ...createClienteDto,
       fechaNacimiento: parseDate,
     });
-    return this.clienteRepository.save(newCliente);
+    await this.clienteRepository.save(newCliente);
+
+    const log = this.logRepository.create({
+      mensaje: `Nuevo cliente ${newCliente.nombre} creado con exito`,
+      tipo: 'Cliente',
+    });
+    await this.logRepository.save(log);
+
+    const clientes = await this.clienteRepository.find({
+      relations: ['ciudad'],
+    });
+
+    return {
+      message: 'Cliente created successfully',
+      status: 200,
+      data: clientes,
+    };
   }
 
   async findAll() {

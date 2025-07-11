@@ -18,6 +18,8 @@ import { RecursoModule } from './recurso/recurso.module';
 import { TipoRecursoModule } from './tipo-recurso/tipo-recurso.module';
 import { ProveedorModule } from './proveedor/proveedor.module';
 import { MantenimientoPreventivoModule } from './mantenimiento-preventivo/mantenimiento-preventivo.module';
+import { UtilsModule } from './utils/utils.module';
+
 
 @Module({
   imports: [
@@ -50,6 +52,7 @@ import { MantenimientoPreventivoModule } from './mantenimiento-preventivo/manten
     TipoRecursoModule,
     ProveedorModule,
     MantenimientoPreventivoModule,
+    UtilsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
