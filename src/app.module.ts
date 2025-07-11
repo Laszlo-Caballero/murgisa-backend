@@ -17,6 +17,7 @@ import { NotaSalidaModule } from './nota-salida/nota-salida.module';
 import { RecursoModule } from './recurso/recurso.module';
 import { TipoRecursoModule } from './tipo-recurso/tipo-recurso.module';
 import { ProveedorModule } from './proveedor/proveedor.module';
+import { MantenimientoPreventivoModule } from './mantenimiento-preventivo/mantenimiento-preventivo.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { ProveedorModule } from './proveedor/proveedor.module';
     RecursoModule,
     TipoRecursoModule,
     ProveedorModule,
+    MantenimientoPreventivoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
