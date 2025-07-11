@@ -249,7 +249,38 @@ export class VentaService {
     };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} venta`;
+  async remove(id: number) {
+    const venta = await this.ventaRepository.findOne({
+      where: { idVenta: id },
+    });
+
+    if (!venta) {
+      throw new HttpException(`Venta with ID ${id} not found`, 404);
+    }
+
+    await this.ventaRepository.update(id, { estado: false });
+
+    await this.logRepository.save({
+      mensaje: `La venta con ID ${id} ha sido eliminada`,
+      tipo: 'Venta',
+    });
+
+    const ventas = await this.ventaRepository.find({
+      relations: [
+        'asignacionPersonal',
+        'cliente',
+        'servicios',
+        'pagos',
+        'notasSalida',
+        'detalleVenta',
+        'detalleVenta.recurso',
+      ],
+    });
+
+    return {
+      message: 'Venta deleted successfully',
+      status: 200,
+      data: ventas,
+    };
   }
 }
