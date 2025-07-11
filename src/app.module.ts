@@ -17,6 +17,8 @@ import { NotaSalidaModule } from './nota-salida/nota-salida.module';
 import { RecursoModule } from './recurso/recurso.module';
 import { TipoRecursoModule } from './tipo-recurso/tipo-recurso.module';
 import { ProveedorModule } from './proveedor/proveedor.module';
+import { UtilsModule } from './utils/utils.module';
+import { UtilsModule } from './utils/utils.module';
 
 @Module({
   imports: [
@@ -48,6 +50,7 @@ import { ProveedorModule } from './proveedor/proveedor.module';
     RecursoModule,
     TipoRecursoModule,
     ProveedorModule,
+    UtilsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
