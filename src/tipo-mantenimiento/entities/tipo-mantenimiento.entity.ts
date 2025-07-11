@@ -1,4 +1,5 @@
 import { MantenimientoCorrectivo } from '../../mantenimiento-correctivo/entities/mantenimiento-correctivo.entity';
+import { MantenimientoPreventivo } from '../../mantenimiento-preventivo/entities/mantenimiento-preventivo.entity';
 import {
   Column,
   Entity,
@@ -27,4 +28,11 @@ export class TipoMantenimiento {
   )
   @JoinTable()
   mantenimientoCorrectivo: MantenimientoCorrectivo[];
+
+  @ManyToMany(
+    () => MantenimientoPreventivo,
+    (mantenimientoPreventivo) => mantenimientoPreventivo.tipo,
+  )
+   @JoinTable()
+  mantenimientoPreventivo: MantenimientoPreventivo[];
 }
