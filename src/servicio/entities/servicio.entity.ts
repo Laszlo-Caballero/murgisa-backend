@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { TipoServicio } from '../../tipo-servicio/entities/tipoServicio.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Servicio {
@@ -13,4 +14,7 @@ export class Servicio {
 
   @Column({ type: 'float' })
   precio: number;
+
+  @ManyToOne(() => TipoServicio, (tipoServicio) => tipoServicio.idTipoServicio)
+  tipoServicio: TipoServicio;
 }
