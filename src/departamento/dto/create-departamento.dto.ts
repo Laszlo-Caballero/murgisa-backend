@@ -14,9 +14,9 @@ export class CreateDepartamentoDto {
   @IsString()
   @IsNotEmpty()
   descripcion: string;
-  @IsNumber()
-  @Min(0)
-  presupuesto: number;
+  @IsString()
+  @IsNotEmpty()
+  presupuesto: string;
 
   @IsBoolean()
   @IsOptional()

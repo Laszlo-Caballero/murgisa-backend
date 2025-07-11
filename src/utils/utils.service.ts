@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Ciudad } from 'src/cliente/entities/ciudades.entity';
 import { Repository } from 'typeorm';
 import { Disponibilidad } from './entities/disponibilidad.entity';
+import { Horario } from './entities/horario.entity';
 
 @Injectable()
 export class UtilsService {
@@ -10,6 +11,8 @@ export class UtilsService {
     @InjectRepository(Ciudad) private ciudadRepository: Repository<Ciudad>,
     @InjectRepository(Disponibilidad)
     private disponibilidadRepository: Repository<Disponibilidad>,
+    @InjectRepository(Horario)
+    private horarioRepository: Repository<Horario>,
   ) {}
 
   async getCiudades() {
@@ -27,6 +30,14 @@ export class UtilsService {
       message: 'Disponibilidad retrieved successfully',
       status: 200,
       data: disponibilidades,
+    };
+  }
+  async getHorarios() {
+    const horarios = await this.horarioRepository.find();
+    return {
+      message: 'Horarios retrieved successfully',
+      status: 200,
+      data: horarios,
     };
   }
 }
