@@ -12,11 +12,12 @@ export class RedisService implements OnModuleInit {
     });
   }
 
-  async set(key: string, value: string) {
-    await this.client.set(key, value);
+  async set<T>(key: string, value: T) {
+    await this.client.set(key, JSON.stringify(value));
   }
 
-  async get(key: string): Promise<string | null> {
-    return this.client.get(key);
+  async get<T>(key: string): Promise<T | null> {
+    const value = await this.client.get(key);
+    return value ? JSON.parse(value) : null;
   }
 }

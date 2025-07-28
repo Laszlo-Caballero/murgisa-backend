@@ -187,6 +187,8 @@ export class VentaService {
 
     await this.logRepository.save(log);
 
+    const key = 'ventas_all';
+
     const ventas = await this.ventaRepository.find({
       relations: [
         'asignacionPersonal',
@@ -202,6 +204,7 @@ export class VentaService {
         'pagos.formaPago',
       ],
     });
+    await this.redisService.set(key, ventas);
 
     return {
       message: 'Venta created successfully',
@@ -213,12 +216,12 @@ export class VentaService {
   async findAll() {
     const key = 'ventas_all';
 
-    const cachedVentas = await this.redisService.get(key);
+    const cachedVentas = await this.redisService.get<Venta[]>(key);
 
     if (cachedVentas) {
       return {
         message: 'Ventas retrieved from cache',
-        data: JSON.parse(cachedVentas),
+        data: cachedVentas,
         status: 200,
       };
     }
@@ -239,7 +242,7 @@ export class VentaService {
       ],
     });
 
-    await this.redisService.set(key, JSON.stringify(ventas));
+    await this.redisService.set(key, ventas);
 
     return {
       message: 'Ventas retrieved successfully',
