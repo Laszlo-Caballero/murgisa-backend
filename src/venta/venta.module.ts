@@ -13,6 +13,7 @@ import { PagoServicio } from './entities/pagoServicio.entity';
 import { Recurso } from 'src/recurso/entities/recurso.entity';
 import { DetalleVenta } from './entities/detalleVenta.entity';
 import { FormaPago } from 'src/forma-pago/entities/forma-pago.entity';
+import { RedisModule } from 'src/redis/redis.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { FormaPago } from 'src/forma-pago/entities/forma-pago.entity';
       DetalleVenta,
       FormaPago,
     ]),
+    RedisModule,
   ],
   controllers: [VentaController],
   providers: [VentaService],

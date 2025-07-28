@@ -14,6 +14,7 @@ import { Recurso } from 'src/recurso/entities/recurso.entity';
 import { DetalleVenta } from './entities/detalleVenta.entity';
 import { PagoServicio } from './entities/pagoServicio.entity';
 import { FormaPago } from 'src/forma-pago/entities/forma-pago.entity';
+import { RedisService } from 'src/redis/redis.service';
 
 @Injectable()
 export class VentaService {
@@ -39,6 +40,7 @@ export class VentaService {
     private readonly pagoServicioRepository: Repository<PagoServicio>,
     @InjectRepository(FormaPago)
     private readonly formaPagoRepository: Repository<FormaPago>,
+    private readonly redisService: RedisService,
   ) {}
 
   async create(createVentaDto: CreateVentaDto) {
@@ -209,6 +211,18 @@ export class VentaService {
   }
 
   async findAll() {
+    const key = 'ventas_all';
+
+    const cachedVentas = await this.redisService.get(key);
+
+    if (cachedVentas) {
+      return {
+        message: 'Ventas retrieved from cache',
+        data: JSON.parse(cachedVentas),
+        status: 200,
+      };
+    }
+
     const ventas = await this.ventaRepository.find({
       relations: [
         'asignacionPersonal',
@@ -224,6 +238,8 @@ export class VentaService {
         'pagos.formaPago',
       ],
     });
+
+    await this.redisService.set(key, JSON.stringify(ventas));
 
     return {
       message: 'Ventas retrieved successfully',

@@ -41,6 +41,7 @@ import { NotaEntradaModule } from './nota-entrada/nota-entrada.module';
         trustServerCertificate: true,
       },
     }),
+
     ServicioModule,
     VentaModule,
     PersonalModule,
